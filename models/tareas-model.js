@@ -21,6 +21,7 @@ const tareaSchema = new mongoose.Schema({
   fechaExpiracion: {
     type: Date,
   },
+  usuario: { type: mongoose.Types.ObjectId, ref: "Usuario" },
 });
 
 module.exports = mongoose.model("Tarea", tareaSchema);

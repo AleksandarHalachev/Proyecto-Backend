@@ -13,6 +13,7 @@ const usuarioSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  tareas: [{ type: mongoose.Types.ObjectId, ref: "Tarea" }],
 });
 
 module.exports = mongoose.model("Usuario", usuarioSchema);
