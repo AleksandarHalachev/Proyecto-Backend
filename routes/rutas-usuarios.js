@@ -125,7 +125,7 @@ router.use(checkAuth);
 router.get("/", async (req, res, next) => {
   let usuarios;
   try {
-    usuarios = await Usuario.find({}, "-password");
+    usuarios = await Usuario.find({}, "-password").populate("tareas");
   } catch (err) {
     const error = new Error(
       "Error. No se han podido recuperar los datos de los usuarios."
@@ -143,7 +143,7 @@ router.get("/:id", async (req, res, next) => {
   let usuario;
   const idUsuario = req.params.id;
   try {
-    usuario = await Usuario.findById(idUsuario);
+    usuario = await Usuario.findById(idUsuario).populate("tareas");
   } catch (err) {
     const error = new Error("Error en la recuperación de datos");
     error.code = 500;

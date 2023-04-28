@@ -8,8 +8,14 @@ const Usuario = require("../models/usuarios-model");
 router.use(checkAuth);
 
 router.post("/", async (req, res, next) => {
-  const { titulo, descripcion, categoria, fechaCreacion, fechaExpiracion } =
-    req.body;
+  const {
+    titulo,
+    descripcion,
+    categoria,
+    fechaCreacion,
+    fechaExpiracion,
+    usuario,
+  } = req.body;
   let existeTarea;
   try {
     existeTarea = await Tarea.findOne({ titulo: titulo });
@@ -30,22 +36,35 @@ router.post("/", async (req, res, next) => {
       categoria,
       fechaCreacion,
       fechaExpiracion,
+      usuario,
     });
+    let usuarioBusca;
+    try {
+      usuarioBusca = await Usuario.findById(req.body.usuario);
+    } catch (error) {
+      const err = new Error("Ha fallado la operación de creación.");
+      err.code = 500;
+      return next(err);
+    }
+    if (!usuarioBusca) {
+      const error = new Error(
+        "No se ha podido encontrar un usuario con ese id"
+      );
+      error.code = 404;
+      return next(error);
+    }
+
     try {
       await nuevaTarea.save();
+      usuarioBusca.tareas.push(nuevaTarea);
+      await usuarioBusca.save();
     } catch (error) {
       const err = new Error("Error al guardar la tarea");
       err.code = 500;
       return next(err);
     }
     res.status(201).json({
-      mensaje: "Tarea creada",
-      tareaId: nuevaTarea.id,
-      titulo: nuevaTarea.titulo,
-      descripcion: nuevaTarea.descripcion,
-      categoria: nuevaTarea.categoria,
-      fechaCreacion: nuevaTarea.fechaCreacion,
-      fechaExpiracion: nuevaTarea.fechaExpiracion,
+      tarea: nuevaTarea,
     });
   }
 });
@@ -53,7 +72,7 @@ router.post("/", async (req, res, next) => {
 router.get("/", async (req, res, next) => {
   let tareas;
   try {
-    tareas = await Tarea.find({});
+    tareas = await Tarea.find({}).populate("usuario");
   } catch (err) {
     const error = new Error(
       "Error. No se han podido recuperar los datos de las tareas."
@@ -71,7 +90,7 @@ router.get("/:id", async (req, res, next) => {
   let tarea;
   const idTarea = req.params.id;
   try {
-    tarea = await Tarea.findById(idTarea);
+    tarea = await Tarea.findById(idTarea).populate("usuario");
   } catch (err) {
     const error = new Error("Error en la recuperación de datos");
     error.code = 500;
@@ -127,8 +146,6 @@ router.delete("/:id", async (req, res, next) => {
     return next(error);
   }
   try {
-    await tarea.deleteOne();
-
     tarea.usuario.tareas.pull(tarea);
     await tarea.usuario.save();
   } catch (err) {
