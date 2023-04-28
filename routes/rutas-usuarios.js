@@ -33,6 +33,7 @@ router.post("/", async (req, res, next) => {
       nombre,
       email,
       password: hashedPassword,
+      tareas: [],
     });
     try {
       await nuevoUsuario.save();
@@ -63,6 +64,7 @@ router.post("/", async (req, res, next) => {
       userId: nuevoUsuario.id,
       nombre: nuevoUsuario.nombre,
       email: nuevoUsuario.email,
+      tareas: nuevoUsuario.tareas,
       token: token,
     });
   }

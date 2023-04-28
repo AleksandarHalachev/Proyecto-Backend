@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const checkAuth = require("../middleware/check-auth");
 const Tarea = require("../models/tareas-model");
+const Usuario = require("../models/usuarios-model");
 
 router.use(checkAuth);
 
@@ -111,6 +112,25 @@ router.delete("/:id", async (req, res, next) => {
   let tareaBorrar;
   try {
     tareaBorrar = await Tarea.findByIdAndDelete(req.params.id);
+  } catch (err) {
+    const error = new Error(
+      "Ha habido algún error. No se han podido eliminar los datos"
+    );
+    error.code = 500;
+    return next(error);
+  }
+  if (!tarea) {
+    const error = new Error(
+      "No se ha podido encontrar una tarea con el id proporcionado"
+    );
+    error.code = 404;
+    return next(error);
+  }
+  try {
+    await tarea.deleteOne();
+
+    tarea.usuario.tareas.pull(tarea);
+    await tarea.usuario.save();
   } catch (err) {
     const error = new Error(
       "Ha habido algún error. No se han podido eliminar los datos"
