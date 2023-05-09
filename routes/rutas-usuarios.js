@@ -42,23 +42,6 @@ router.post("/", async (req, res, next) => {
       err.code = 500;
       return next(err);
     }
-    let token;
-
-    try {
-      token = jwt.sign(
-        {
-          userId: nuevoUsuario.id,
-          nombre: nuevoUsuario.nombre,
-          email: nuevoUsuario.email,
-        },
-        process.env.JWT_KEY,
-        { expiresIn: "1h" }
-      );
-    } catch (error) {
-      const err = new Error("Error al crear el token");
-      err.code = 500;
-      return next(err);
-    }
     res.status(201).json({
       mensaje: "Usuario creado",
       userId: nuevoUsuario.id,
