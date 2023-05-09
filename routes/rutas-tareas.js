@@ -125,6 +125,24 @@ router.get("/:id", async (req, res, next) => {
   });
 });
 
+router.get("/usuario/:id", async (req, res, next) => {
+  const idUsuario = req.params.id;
+  let tareasUsuario;
+  try {
+    tareasUsuario = await Tarea.find({ usuario: idUsuario }).populate(
+      "usuario"
+    );
+  } catch (err) {
+    const error = new Error("Error en la recuperación de datos");
+    error.code = 500;
+    return next(error);
+  }
+  res.status(200).json({
+    mensaje: "Todas las tareas del usuario:",
+    tareas: tareasUsuario,
+  });
+});
+
 router.patch("/:id", async (req, res, next) => {
   let tareaModificar;
   try {
