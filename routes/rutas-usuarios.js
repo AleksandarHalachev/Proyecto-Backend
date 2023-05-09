@@ -48,7 +48,6 @@ router.post("/", async (req, res, next) => {
       nombre: nuevoUsuario.nombre,
       email: nuevoUsuario.email,
       tareas: nuevoUsuario.tareas,
-      token: token,
     });
   }
 });

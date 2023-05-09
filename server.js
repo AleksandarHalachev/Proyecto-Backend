@@ -4,7 +4,12 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const cors = require("cors");
 
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 const rutasUsuarios = require("./routes/rutas-usuarios");
