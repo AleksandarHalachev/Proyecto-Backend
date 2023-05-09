@@ -1,0 +1,17 @@
+ENDPOINTS DEL SERVIDOR ALEK:
+https://proyecto-backend-8j1u.onrender.com
+
+/api/usuarios/
+/api/mistareas/
+
+GET: /api/usuarios
+GET por id: /api/usuarios/:id
+POST: /api/usuarios
+PATCH: /api/usuarios/:id
+DELETE: /api/usuarios/:id
+
+GET: /api/mistareas
+GET por id: /api/mistareas/:id
+POST: /api/mistareas
+PATCH: /api/mistareas/:id
+DELETE: /api/mistareas/:id

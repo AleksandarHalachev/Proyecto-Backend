@@ -11,6 +11,7 @@ const tareaSchema = new mongoose.Schema({
   },
   categoria: {
     type: String,
+    enum: ["Personal", "Trabajo", "Otros"],
     required: true,
   },
   fechaCreacion: {
