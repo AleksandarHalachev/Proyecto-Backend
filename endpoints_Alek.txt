@@ -12,6 +12,7 @@ DELETE: /api/usuarios/:id
 
 GET: /api/mistareas
 GET por id: /api/mistareas/:id
+GET tareas de un usuario /api/mistareas/usuario/:id
 POST: /api/mistareas
 PATCH: /api/mistareas/:id
 DELETE: /api/mistareas/:id
