@@ -108,7 +108,7 @@ router.get("/:id", async (req, res, next) => {
   let tarea;
   const idTarea = req.params.id;
   try {
-    tarea = await Tarea.findById(idTarea).populate("usuario");
+    tarea = await Tarea.findById(idTarea);
   } catch (err) {
     const error = new Error("Error en la recuperación de datos");
     error.code = 500;
