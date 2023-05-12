@@ -5,7 +5,7 @@ require("dotenv").config();
 const cors = require("cors");
 
 const corsOptions = {
-  origin: "https://proyecto-frontend-fs2p.onrender.com/",
+  origin: "https://proyecto-frontend-fs2p.onrender.com",
   optionsSuccessStatus: 200,
 };
 
